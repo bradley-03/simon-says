@@ -12,14 +12,19 @@
 </head>
 <body>
     <h1>Simon Says</h1>
-    <button id="reset_button">Reset</button>
+    <button id="reset_button">Start</button>
     <h3 id="score_counter">Score: 0</h3>
 
     <div id="gameboard">
-        <div id="colour1" class="colourButton"></div>
-        <div id="colour2" class="colourButton"></div>
-        <div id="colour3" class="colourButton"></div>
-        <div id="colour4" class="colourButton"></div>
+        <button id="colour1" class="colourButton"></button>
+        <button id="colour2" class="colourButton"></button>
+        <button id="colour3" class="colourButton"></button>
+        <button id="colour4" class="colourButton"></button>
+    </div>
+
+    <div id="game_over">
+        <h1>GAME OVER!</h1>
+        <h2>FINAL SCORE: 0</h2>
     </div>
 
     <script src="app.js"></script>
