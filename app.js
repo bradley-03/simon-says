@@ -54,7 +54,6 @@ function checkHighscore() {
     }
     let darkmodeCookie = getCookie("darkmode")
     if (darkmodeCookie != "") {
-        console.log(darkmodeCookie)
         if (darkmodeCookie == "false") {
             dark_mode.classList.add("light")
             dark_mode.innerHTML = '<i class="bi bi-moon-fill"></i>'
