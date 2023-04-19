@@ -4,8 +4,38 @@ body {
     font-family: 'Roboto', sans-serif;
     color: black;
     margin: 0;
+    transition: background-color 0.5s, color 0.5s;
 }
 
+body.darkMode {
+    color: white;
+    background-color: #000814;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+#dark_mode {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    height: 45px;
+    width: 45px;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    border-radius: 10px;
+    transition: 0.2s;
+    cursor: pointer;
+    color: black;
+}
+
+#dark_mode.light {
+    color: white;
+}
+
+#dark_mode:hover {
+    background-color: rgba(0, 0, 0, 0.309)
+}
+ 
 .hidden {
     display: none;
 }

@@ -5,6 +5,7 @@ const overlay_score = document.getElementById('overlay_score')
 const new_game = document.getElementById('new_game')
 const start_overlay = document.getElementById('start_overlay')
 const high_score = document.getElementById('high_score')
+const dark_mode = document.getElementById('dark_mode')
 
 const colour_buttons = [
     document.getElementById('colour1'),
@@ -27,6 +28,7 @@ let sequenceCount = 0
 let canInteract = false
 let gameStarted = false
 let speedMultiplier = 1
+let darkMode = false
 
 function getCookie(cname) {
     let name = cname + "=";
@@ -45,10 +47,24 @@ function getCookie(cname) {
 }
 
 function checkHighscore() {
-    let highscore = getCookie("highscore");
-    if (highscore != "") {
-        highScore = highscore
+    let highscoreCookie = getCookie("highscore")
+    if (highscoreCookie != "") { // if highscore cookie exists set as variable
+        highScore = highscoreCookie
         high_score.innerText = `High Score: ${highScore}`
+    }
+    let darkmodeCookie = getCookie("darkmode")
+    if (darkmodeCookie != "") {
+        if (darkmodeCookie = false) {
+            document.body.classList.remove("darkMode")
+            dark_mode.classList.remove("light")
+            dark_mode.innerHTML = '<i class="bi bi-moon-fill"></i>'
+            darkMode = false
+        } else {
+            document.body.classList.add("darkMode")
+            dark_mode.classList.add("light")
+            dark_mode.innerHTML = '<i class="bi bi-brightness-high-fill"></i>'
+            darkMode = true
+        }
     }
 }
 
@@ -139,7 +155,7 @@ for (let i = 0; i < colour_buttons.length; i++) {
             if (playerSequence[sequenceCount] !== sequence[sequenceCount]) { // if input is incorrect end the game
                 if (score > highScore) {
                     high_score.innerText = `High Score: ${score}`
-                    document.cookie = `highscore=${score}`;
+                    document.cookie = `highscore=${score}`
                 }
                 endGame(true)
             } else {
@@ -161,4 +177,20 @@ for (let i = 0; i < colour_buttons.length; i++) {
         }
     })
 }
+
+dark_mode.addEventListener("click", () => {
+    if (darkMode == false) {
+        document.body.classList.add("darkMode")
+        dark_mode.classList.add("light")
+        dark_mode.innerHTML = '<i class="bi bi-brightness-high-fill"></i>'
+        document.cookie = "darkmode=true"
+        darkMode = true
+    } else {
+        document.body.classList.remove("darkMode")
+        dark_mode.classList.remove("light")
+        dark_mode.innerHTML = '<i class="bi bi-moon-fill"></i>'
+        document.cookie = "darkmode=false"
+        darkMode = false
+    }
+})
 
