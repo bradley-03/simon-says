@@ -3,6 +3,7 @@ const score_counter = document.getElementById('score_counter')
 const overlay = document.getElementById('game_over')
 const overlay_score = document.getElementById('overlay_score')
 const new_game = document.getElementById('new_game')
+const start_overlay = document.getElementById('start_overlay')
 
 const colour_buttons = [
     document.getElementById('colour1'),
@@ -74,7 +75,7 @@ async function startGame () {
     playerSequence = []
     updateScoreCounter()
     gameStarted = true
-    reset_button.classList.add('hidden')
+    start_overlay.classList.add('hidden')
     toggleInput(true)
 
     sequenceCount = 0
