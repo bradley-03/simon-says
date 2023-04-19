@@ -138,7 +138,7 @@ for (let i = 0; i < colour_buttons.length; i++) {
             playerSequence.push(i + 1)
             if (playerSequence[sequenceCount] !== sequence[sequenceCount]) { // if input is incorrect end the game
                 if (score > highScore) {
-                    high_score.innerText = `High Score: ${highScore}`
+                    high_score.innerText = `High Score: ${score}`
                     document.cookie = `highscore=${score}`;
                 }
                 endGame(true)
