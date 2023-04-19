@@ -7,6 +7,24 @@ const start_overlay = document.getElementById('start_overlay')
 const high_score = document.getElementById('high_score')
 const dark_mode = document.getElementById('dark_mode')
 
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audio = new AudioContext();
+
+const playNote = (freq, e) => {
+    // play note according to data-frequency attribute
+    (new SoundPlayer(audio)).play(freq, 0.3, "sine").stop(0.3);
+    if (e) {
+        e.cancelBubble = true;
+    }
+};
+
+const notes = [
+    196.00,
+    130.81,
+    164.81,
+    196.00,
+]
+
 const colour_buttons = [
     document.getElementById('colour1'),
     document.getElementById('colour2'),
@@ -97,6 +115,7 @@ function generateSequence(currentsequence) {
 async function flashSquare(square) {
     const el = document.getElementById(`colour${square}`)
     el.classList.add('flash')
+    playNote(notes[square - 1])
     await sleep(500 / speedMultiplier)
     el.classList.remove('flash')
 }
@@ -151,6 +170,7 @@ for (let i = 0; i < colour_buttons.length; i++) {
     colour_buttons[i].addEventListener("click", async () => {
         if (canInteract == true) {
             playerSequence.push(i + 1)
+            playNote(notes[i], colour_buttons[i])
             if (playerSequence[sequenceCount] !== sequence[sequenceCount]) { // if input is incorrect end the game
                 if (score > highScore) {
                     high_score.innerText = `High Score: ${score}`
