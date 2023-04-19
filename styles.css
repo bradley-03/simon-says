@@ -17,6 +17,11 @@ body {
     place-content: space-evenly;
 }
 
+#gameboard h1 {
+    position: fixed;
+    align-self: center;
+}
+
 .colourButton {
     height: 350px;
     width: 350px;
