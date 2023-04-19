@@ -6,6 +6,10 @@ body {
     margin: 0;
 }
 
+.hidden {
+    display: none;
+}
+
 #gameboard {
     margin: auto;
     height: 750px;
@@ -18,7 +22,7 @@ body {
 }
 
 #gameboard h1 {
-    position: fixed;
+    position: absolute;
     align-self: center;
 }
 
@@ -85,4 +89,8 @@ body {
 
 #game_over h2 {
     font-size: 2rem;
+}
+
+#game_over.shown {
+    display: flex;
 }
