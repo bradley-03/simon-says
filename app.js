@@ -4,6 +4,7 @@ const overlay = document.getElementById('game_over')
 const overlay_score = document.getElementById('overlay_score')
 const new_game = document.getElementById('new_game')
 const start_overlay = document.getElementById('start_overlay')
+const high_score = document.getElementById('high_score')
 
 const colour_buttons = [
     document.getElementById('colour1'),
@@ -18,15 +19,42 @@ function sleep(ms) {
 
 const MAX_SPEED_MULTIPLIER = 3.5
 
+let highScore = 0
 let score = 0
 let sequence = []
 let playerSequence = []
 let sequenceCount = 0
 let canInteract = false
 let gameStarted = false
-let speedMultiplier = 1 
+let speedMultiplier = 1
 
-function toggleInput (toggle) {
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function checkHighscore() {
+    let highscore = getCookie("highscore");
+    if (highscore != "") {
+        highScore = highscore
+        high_score.innerText = `High Score: ${highScore}`
+    }
+}
+
+checkHighscore()
+
+function toggleInput(toggle) {
     if (toggle == false) {
         for (let button of colour_buttons) {
             button.disabled = true
@@ -40,25 +68,25 @@ function toggleInput (toggle) {
     }
 }
 
-function updateScoreCounter () {
+function updateScoreCounter() {
     score_counter.innerText = score
 }
 
-function generateSequence (currentsequence) {
+function generateSequence(currentsequence) {
     let temparray = currentsequence
-    const randColour = Math.floor(Math.random() * 4) + 1 
+    const randColour = Math.floor(Math.random() * 4) + 1
     temparray.push(randColour)
     return temparray
 }
 
-async function flashSquare (square) {
+async function flashSquare(square) {
     const el = document.getElementById(`colour${square}`)
     el.classList.add('flash')
     await sleep(500 / speedMultiplier)
     el.classList.remove('flash')
 }
 
-async function flashSequence (sequence) {
+async function flashSequence(sequence) {
     toggleInput(false)
     await sleep(1000)
     for (let colour of sequence) {
@@ -68,7 +96,7 @@ async function flashSequence (sequence) {
     toggleInput(true)
 }
 
-async function startGame () {
+async function startGame() {
     speedMultiplier = 1
     score = 0
     sequence = []
@@ -83,7 +111,7 @@ async function startGame () {
     await flashSequence(sequence)
 }
 
-async function endGame (gameover) {
+async function endGame(gameover) {
     if (gameover) {
         overlay_score.innerText = "FINAL SCORE: " + score
         overlay.classList.add('shown')
@@ -109,6 +137,10 @@ for (let i = 0; i < colour_buttons.length; i++) {
         if (canInteract == true) {
             playerSequence.push(i + 1)
             if (playerSequence[sequenceCount] !== sequence[sequenceCount]) { // if input is incorrect end the game
+                if (score > highScore) {
+                    high_score.innerText = `High Score: ${highScore}`
+                    document.cookie = `highscore=${score}`;
+                }
                 endGame(true)
             } else {
                 if (playerSequence.length == sequence.length) { // check if sequence is complete
@@ -120,7 +152,7 @@ for (let i = 0; i < colour_buttons.length; i++) {
                     if (speedMultiplier < MAX_SPEED_MULTIPLIER) {
                         speedMultiplier += 0.1;
                     }
-                    
+
                     await flashSequence(sequence)
                 } else {
                     sequenceCount++
