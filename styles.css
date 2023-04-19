@@ -1,13 +1,17 @@
 body {
     text-align: center;
-    background-color: #00695C;
+    background-color: #fefae0;
     font-family: 'Roboto', sans-serif;
-    color: white;
+    color: black;
     margin: 0;
 }
 
 .hidden {
     display: none;
+}
+
+h1 {
+    font-size: 3rem;
 }
 
 #gameboard {
@@ -22,6 +26,8 @@ body {
 }
 
 #gameboard h1 {
+    font-size: 2rem;
+    color: white;
     position: absolute;
     align-self: center;
 }
@@ -93,4 +99,26 @@ body {
 
 #game_over.shown {
     display: flex;
+}
+
+@media (max-width: 750px) {
+    #gameboard {
+        width: 500px;
+        height: 500px;
+    }
+    .colourButton {
+        width: 225px;
+        height: 225px;
+    }
+}
+
+@media (max-width: 502px) {
+    #gameboard {
+        width: 250px;
+        height: 250px;
+    }
+    .colourButton {
+        width: 112.5px;
+        height: 112.5px;
+    }
 }
