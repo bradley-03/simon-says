@@ -24,7 +24,7 @@ let playerSequence = []
 let sequenceCount = 0
 let canInteract = false
 let gameStarted = false
-let speedMultiplier = 1
+let speedMultiplier = 1 
 
 function toggleInput (toggle) {
     if (toggle == false) {
@@ -46,7 +46,7 @@ function updateScoreCounter () {
 
 function generateSequence (currentsequence) {
     let temparray = currentsequence
-    const randColour = Math.floor(Math.random() * 4) + 1
+    const randColour = Math.floor(Math.random() * 4) + 1 
     temparray.push(randColour)
     return temparray
 }
@@ -81,7 +81,6 @@ async function startGame () {
     sequenceCount = 0
     sequence = generateSequence(sequence)
     await flashSequence(sequence)
-
 }
 
 async function endGame (gameover) {
@@ -90,7 +89,6 @@ async function endGame (gameover) {
         overlay.classList.add('shown')
     }
     gameStarted = false
-    reset_button.innerText = "Start"
 }
 
 reset_button.addEventListener("click", () => {
@@ -110,10 +108,10 @@ for (let i = 0; i < colour_buttons.length; i++) {
     colour_buttons[i].addEventListener("click", async () => {
         if (canInteract == true) {
             playerSequence.push(i + 1)
-            if (playerSequence[sequenceCount] !== sequence[sequenceCount]) { // if input is incorrect
+            if (playerSequence[sequenceCount] !== sequence[sequenceCount]) { // if input is incorrect end the game
                 endGame(true)
             } else {
-                if (playerSequence.length == sequence.length) {
+                if (playerSequence.length == sequence.length) { // check if sequence is complete
                     playerSequence = []
                     sequenceCount = 0
                     score++
