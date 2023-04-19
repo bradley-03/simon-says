@@ -25,11 +25,11 @@ body.darkMode {
     border-radius: 10px;
     transition: 0.2s;
     cursor: pointer;
-    color: black;
+    color: white;
 }
 
 #dark_mode.light {
-    color: white;
+    color: black;
 }
 
 #dark_mode:hover {
