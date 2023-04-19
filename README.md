@@ -1,2 +1,2 @@
 # simon-says
-Simon Says game in HTML CSS and JS
+Simon Says game written in HTML CSS and JS
