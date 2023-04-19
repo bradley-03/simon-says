@@ -1,14 +1,15 @@
 const reset_button = document.getElementById('reset_button')
 const score_counter = document.getElementById('score_counter')
+const overlay = document.getElementById('game_over')
+const overlay_score = document.getElementById('overlay_score')
+const new_game = document.getElementById('new_game')
 
-const colour1btn = document.getElementById('colour1')
-const colour2btn = document.getElementById('colour2')
-const colour3btn = document.getElementById('colour3')
-const colour4btn = document.getElementById('colour4')
-
-const GAME_SETTINGS = {
-    
-}
+const colour_buttons = [
+    document.getElementById('colour1'),
+    document.getElementById('colour2'),
+    document.getElementById('colour3'),
+    document.getElementById('colour4'),
+]
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -17,10 +18,26 @@ function sleep(ms) {
 let score = 0
 let sequence = []
 let playerSequence = []
-let canInteract = true
+let sequenceCount = 0
+let canInteract = false
+let gameStarted = false
+
+function toggleInput (toggle) {
+    if (toggle == false) {
+        for (let button of colour_buttons) {
+            button.disabled = true
+        }
+        canInteract = false
+    } else {
+        for (let button of colour_buttons) {
+            button.disabled = false
+        }
+        canInteract = true
+    }
+}
 
 function updateScoreCounter () {
-    score_counter.innerText = "Score: " + score
+    score_counter.innerText = score
 }
 
 function generateSequence (currentsequence) {
@@ -38,32 +55,75 @@ async function flashSquare (square) {
 }
 
 async function flashSequence (sequence) {
-    canInteract = false
+    toggleInput(false)
+    await sleep(1000)
     for (let colour of sequence) {
         await flashSquare(colour)
         await sleep(300)
     }
-    canInteract = true
+    toggleInput(true)
 }
 
-async function resetGame () {
+async function startGame () {
     score = 0
     sequence = []
     playerSequence = []
     updateScoreCounter()
+    gameStarted = true
+    reset_button.classList.add('hidden')
+    toggleInput(true)
+
+    sequenceCount = 0
     sequence = generateSequence(sequence)
     await flashSequence(sequence)
+
+}
+
+async function endGame (gameover) {
+    if (gameover) {
+        overlay_score.innerText = "FINAL SCORE: " + score
+        overlay.classList.add('shown')
+    }
+    gameStarted = false
+    reset_button.innerText = "Start"
 }
 
 reset_button.addEventListener("click", () => {
-    resetGame()
-})
-
-colour1btn.addEventListener("click", () => {
-    if (canInteract == true) {
-        score++
-        updateScoreCounter()
-        sequence = generateSequence(sequence)
-        console.log(sequence)
+    if (gameStarted == false) {
+        startGame()
+    } else {
+        endGame()
     }
 })
+
+new_game.addEventListener("click", () => {
+    overlay.classList.remove('shown')
+    startGame()
+})
+
+for (let i = 0; i < colour_buttons.length; i++) {
+    colour_buttons[i].addEventListener("click", async () => {
+        if (canInteract == true) {
+            playerSequence.push(i + 1)
+            console.log(playerSequence)
+            console.log(sequence)
+            console.log(sequenceCount)
+            if (playerSequence[sequenceCount] !== sequence[sequenceCount]) { // if input is incorrect
+                endGame(true)
+            } else {
+                if (playerSequence.length == sequence.length) {
+                    playerSequence = []
+                    sequenceCount = 0
+                    score++
+                    updateScoreCounter()
+                    sequence = generateSequence(sequence)
+                    
+                    await flashSequence(sequence)
+                } else {
+                    sequenceCount++
+                }
+            }
+        }
+    })
+}
+
