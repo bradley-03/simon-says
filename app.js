@@ -15,12 +15,15 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+const MAX_SPEED_MULTIPLIER = 3.5
+
 let score = 0
 let sequence = []
 let playerSequence = []
 let sequenceCount = 0
 let canInteract = false
 let gameStarted = false
+let speedMultiplier = 1
 
 function toggleInput (toggle) {
     if (toggle == false) {
@@ -50,7 +53,7 @@ function generateSequence (currentsequence) {
 async function flashSquare (square) {
     const el = document.getElementById(`colour${square}`)
     el.classList.add('flash')
-    await sleep(500)
+    await sleep(500 / speedMultiplier)
     el.classList.remove('flash')
 }
 
@@ -59,12 +62,13 @@ async function flashSequence (sequence) {
     await sleep(1000)
     for (let colour of sequence) {
         await flashSquare(colour)
-        await sleep(300)
+        await sleep(300 / speedMultiplier)
     }
     toggleInput(true)
 }
 
 async function startGame () {
+    speedMultiplier = 1
     score = 0
     sequence = []
     playerSequence = []
@@ -105,9 +109,6 @@ for (let i = 0; i < colour_buttons.length; i++) {
     colour_buttons[i].addEventListener("click", async () => {
         if (canInteract == true) {
             playerSequence.push(i + 1)
-            console.log(playerSequence)
-            console.log(sequence)
-            console.log(sequenceCount)
             if (playerSequence[sequenceCount] !== sequence[sequenceCount]) { // if input is incorrect
                 endGame(true)
             } else {
@@ -117,6 +118,9 @@ for (let i = 0; i < colour_buttons.length; i++) {
                     score++
                     updateScoreCounter()
                     sequence = generateSequence(sequence)
+                    if (speedMultiplier < MAX_SPEED_MULTIPLIER) {
+                        speedMultiplier += 0.1;
+                    }
                     
                     await flashSequence(sequence)
                 } else {
